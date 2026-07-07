@@ -239,7 +239,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "fr",
+    fallbackLng: "fr", // Si une clé manque en EN/ES, utiliser FR
     lng: "fr",
     interpolation: {
       escapeValue: false,
@@ -247,6 +247,17 @@ i18n
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
+    },
+    // Configuration pour éviter les erreurs de clés manquantes
+    returnNull: false, // Ne jamais retourner null
+    returnEmptyString: false, // Ne jamais retourner une chaîne vide
+    returnObjects: false, // Ne pas retourner des objets
+    saveMissing: false, // Ne pas sauvegarder les clés manquantes
+    missingKeyHandler: (lng, ns, key) => {
+      // Logger les clés manquantes en dev
+      if (import.meta.env.DEV) {
+        console.warn(`[i18n] Missing translation: ${lng}.${ns}.${key}`);
+      }
     },
   });
 

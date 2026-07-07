@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, User, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { services } from "@/data/services";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "home", href: "/" },
@@ -25,6 +26,7 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
   const { t } = useTranslation();
+  const { user, profile, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 100);
@@ -112,13 +114,50 @@ export default function Header() {
           {/* Right section */}
           <div className="hidden lg:flex items-center gap-3">
             <LanguageSwitcher />
-            <Link
-              to="/rendez-vous"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-dark text-sm font-semibold rounded-lg hover:bg-accent-dark transition-all duration-300 hover:-translate-y-0.5"
-            >
-              {t("header.cta")}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+
+            {user ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/mon-compte"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-white/90 hover:text-white text-sm font-medium transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  {profile?.first_name || 'Mon compte'}
+                </Link>
+                {(profile?.role === 'admin' || user?.email === 'contact@andoh-dohgad.com') && (
+                  <Link
+                    to="/admin"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-all shadow-md"
+                  >
+                    👑 Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => signOut()}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-white/90 hover:text-white text-sm font-medium transition-colors"
+                  title="Déconnexion"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/connexion"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-white/90 hover:text-white text-sm font-medium transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  Connexion
+                </Link>
+                <Link
+                  to="/inscription"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-dark text-sm font-semibold rounded-lg hover:bg-accent/90 transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Inscription
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
