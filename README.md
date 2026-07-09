@@ -186,7 +186,121 @@ Paiements
 2. **Redirect URLs** : Cliquer "Add URL" et ajouter `https://new-andoh-dohgad.vercel.app/**`
 3. **Sauvegarder**
 
-#### 2. Créer les buckets Storage (5 min)
+#### 2. Créer les tables Blog (OBLIGATOIRE - 5 min)
+
+**URL** : https://supabase.com/dashboard/project/tszsvbzfufglvdcsjzpo/sql/new
+
+**Copier-coller et exécuter ce SQL** :
+
+```sql
+-- Create enum for content status (si pas déjà fait)
+DO $$ BEGIN
+    CREATE TYPE content_status AS ENUM ('draft', 'active', 'archived');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+-- Create enum for blog categories
+DO $$ BEGIN
+    CREATE TYPE blog_category AS ENUM ('fiscalite', 'rh', 'strategie', 'comptabilite', 'entrepreneuriat', 'reglementation');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+-- Create blog_posts table
+CREATE TABLE IF NOT EXISTS blog_posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug TEXT UNIQUE NOT NULL,
+    category blog_category NOT NULL,
+    author_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+    cover_image_url TEXT,
+    published_at TIMESTAMP WITH TIME ZONE,
+    status content_status DEFAULT 'draft',
+    views_count INTEGER DEFAULT 0,
+    reading_time INTEGER,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create blog_post_translations table
+CREATE TABLE IF NOT EXISTS blog_post_translations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    post_id UUID NOT NULL REFERENCES blog_posts(id) ON DELETE CASCADE,
+    language TEXT NOT NULL CHECK (language IN ('fr', 'en', 'es')),
+    title TEXT NOT NULL,
+    excerpt TEXT,
+    content TEXT,
+    meta_title TEXT,
+    meta_description TEXT,
+    tags TEXT[] DEFAULT '{}',
+    UNIQUE(post_id, language)
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON blog_posts(slug);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_category ON blog_posts(category);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_status ON blog_posts(status);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published_at ON blog_posts(published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_blog_post_translations_post_id ON blog_post_translations(post_id);
+CREATE INDEX IF NOT EXISTS idx_blog_post_translations_language ON blog_post_translations(language);
+
+-- Enable RLS
+ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE blog_post_translations ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies
+DROP POLICY IF EXISTS "Anyone can view published posts" ON blog_posts;
+DROP POLICY IF EXISTS "Authors can view own drafts" ON blog_posts;
+DROP POLICY IF EXISTS "Admins can manage all posts" ON blog_posts;
+DROP POLICY IF EXISTS "Anyone can view published post translations" ON blog_post_translations;
+DROP POLICY IF EXISTS "Admins can manage all post translations" ON blog_post_translations;
+
+-- RLS Policies for blog_posts
+CREATE POLICY "Anyone can view published posts"
+    ON blog_posts FOR SELECT
+    USING (status = 'active' AND published_at IS NOT NULL AND published_at <= NOW());
+
+CREATE POLICY "Authors can view own drafts"
+    ON blog_posts FOR SELECT
+    USING (author_id = auth.uid() OR EXISTS (
+        SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'
+    ));
+
+CREATE POLICY "Admins can manage all posts"
+    ON blog_posts FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'
+    ));
+
+-- RLS Policies for blog_post_translations
+CREATE POLICY "Anyone can view published post translations"
+    ON blog_post_translations FOR SELECT
+    USING (EXISTS (
+        SELECT 1 FROM blog_posts
+        WHERE id = post_id
+        AND status = 'active'
+        AND published_at IS NOT NULL
+        AND published_at <= NOW()
+    ));
+
+CREATE POLICY "Admins can manage all post translations"
+    ON blog_post_translations FOR ALL
+    USING (EXISTS (
+        SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'
+    ));
+
+-- Function to increment views
+CREATE OR REPLACE FUNCTION increment_blog_views(post_slug TEXT)
+RETURNS void AS $$
+BEGIN
+    UPDATE blog_posts
+    SET views_count = views_count + 1
+    WHERE slug = post_slug;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
+
+#### 3. Créer les buckets Storage (5 min)
 
 **URL** : https://supabase.com/dashboard/project/tszsvbzfufglvdcsjzpo/sql/new
 
@@ -231,7 +345,7 @@ USING (
 );
 ```
 
-#### 3. Créer le compte super admin (3 min)
+#### 4. Créer le compte super admin (3 min)
 
 **URL** : https://supabase.com/dashboard/project/tszsvbzfufglvdcsjzpo/auth/users
 
