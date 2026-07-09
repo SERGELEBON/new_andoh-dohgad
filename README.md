@@ -314,7 +314,7 @@ CREATE TABLE IF NOT EXISTS documentation (
     file_url TEXT NOT NULL,
     file_size BIGINT DEFAULT 0,
     download_count INTEGER DEFAULT 0,
-    status content_status DEFAULT 'draft',
+    status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'active', 'archived')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
