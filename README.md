@@ -299,17 +299,18 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+-- Drop existing tables if they exist
+DROP TABLE IF EXISTS documentation_translations CASCADE;
+DROP TABLE IF EXISTS documentation CASCADE;
+DROP TYPE IF EXISTS document_type CASCADE;
+
 -- Create enum for document types
-DO $$ BEGIN
-    CREATE TYPE document_type AS ENUM ('guides', 'fiscaux', 'modeles', 'notes');
-EXCEPTION
-    WHEN duplicate_object THEN null;
-END $$;
+CREATE TYPE document_type AS ENUM ('guides', 'fiscaux', 'modeles', 'notes');
 
 -- Create documentation table
-CREATE TABLE IF NOT EXISTS documentation (
+CREATE TABLE documentation (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    type document_type NOT NULL,
+    doc_type document_type NOT NULL,
     price DECIMAL(10, 2) DEFAULT 0,
     file_url TEXT NOT NULL,
     file_size BIGINT DEFAULT 0,
@@ -320,7 +321,7 @@ CREATE TABLE IF NOT EXISTS documentation (
 );
 
 -- Create documentation_translations table
-CREATE TABLE IF NOT EXISTS documentation_translations (
+CREATE TABLE documentation_translations (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     doc_id UUID NOT NULL REFERENCES documentation(id) ON DELETE CASCADE,
     language TEXT NOT NULL CHECK (language IN ('fr', 'en', 'es')),
@@ -330,10 +331,10 @@ CREATE TABLE IF NOT EXISTS documentation_translations (
 );
 
 -- Create indexes for documentation
-CREATE INDEX IF NOT EXISTS idx_documentation_type ON documentation(type);
-CREATE INDEX IF NOT EXISTS idx_documentation_status ON documentation(status);
-CREATE INDEX IF NOT EXISTS idx_documentation_translations_doc_id ON documentation_translations(doc_id);
-CREATE INDEX IF NOT EXISTS idx_documentation_translations_language ON documentation_translations(language);
+CREATE INDEX idx_documentation_type ON documentation(doc_type);
+CREATE INDEX idx_documentation_status ON documentation(status);
+CREATE INDEX idx_documentation_translations_doc_id ON documentation_translations(doc_id);
+CREATE INDEX idx_documentation_translations_language ON documentation_translations(language);
 
 -- Enable RLS for documentation
 ALTER TABLE documentation ENABLE ROW LEVEL SECURITY;
