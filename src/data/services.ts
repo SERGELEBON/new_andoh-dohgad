@@ -65,7 +65,7 @@ export const services: Service[] = [
   {
     slug: "creation-entreprise",
     icon: Building2,
-    title: "Creation et structuration d'entreprise",
+    title: "Création et structuration d'entreprise",
     shortDescription:
       "Du choix du statut juridique aux formalites d'immatriculation, nous vous guidons dans chaque etape de votre creation.",
     fullDescription:
@@ -94,7 +94,7 @@ export const services: Service[] = [
   {
     slug: "conseil-strategique",
     icon: TrendingUp,
-    title: "Conseil et accompagnement strategique",
+    title: "Conseil et accompagnement stratégique",
     shortDescription:
       "Analyse de marche, planification strategique, tableaux de bord et conseil en gestion pour des decisions eclairees.",
     fullDescription:
@@ -123,7 +123,7 @@ export const services: Service[] = [
   {
     slug: "formation",
     icon: GraduationCap,
-    title: "Formation et renforcement de capacites",
+    title: "Formation et renforcement de capacités",
     shortDescription:
       "Programmes de formation sur mesure en comptabilite, gestion, fiscalite et entrepreneuriat pour vos equipes.",
     fullDescription:
