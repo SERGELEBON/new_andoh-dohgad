@@ -51,7 +51,7 @@ export interface Solution {
   title: string;
   description: string;
   features: string[];
-  status: "Disponible" | "Bientot";
+  status: "Disponible" | "Bientôt";
 }
 
 export interface SurveyField {
