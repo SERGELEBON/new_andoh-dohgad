@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Layout from "@/components/layout/Layout";
+import RouteSeo from "@/components/RouteSeo";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
@@ -37,6 +38,7 @@ function App() {
   return (
     <AuthProvider>
       <ScrollToTop />
+      <RouteSeo />
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
