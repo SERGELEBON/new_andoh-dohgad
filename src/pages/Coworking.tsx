@@ -129,14 +129,14 @@ function RegistrationForm() {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-medium text-dark mb-1.5">Telephone *</label>
+                    <label className="block text-sm font-medium text-dark mb-1.5">Téléphone *</label>
                     <input type="tel" {...register("phone")} className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:border-primary ${errors.phone ? "border-red-500" : "border-gray-200"}`} />
                     {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-dark mb-1.5">Type d&apos;espace *</label>
                     <select {...register("spaceType")} className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:border-primary ${errors.spaceType ? "border-red-500" : "border-gray-200"}`}>
-                      <option value="">Selectionnez...</option>
+                      <option value="">Sélectionnez...</option>
                       <option value="individual">Bureau individuel</option>
                       <option value="open">Open-space</option>
                       <option value="meeting">Salle de reunion</option>
@@ -146,7 +146,7 @@ function RegistrationForm() {
                 <div>
                   <label className="block text-sm font-medium text-dark mb-1.5">Formule souhaitee *</label>
                   <select {...register("plan")} className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:border-primary ${errors.plan ? "border-red-500" : "border-gray-200"}`}>
-                    <option value="">Selectionnez...</option>
+                    <option value="">Sélectionnez...</option>
                     <option value="nomade">Nomade</option>
                     <option value="resident">Resident</option>
                     <option value="domiciliation">Domiciliation</option>

@@ -10,7 +10,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 const schema = z.object({
   name: z.string().min(2, "Minimum 2 caracteres"),
   email: z.string().email("Email invalide"),
-  subject: z.string().min(1, "Selectionnez un sujet"),
+  subject: z.string().min(1, "Sélectionnez un sujet"),
   message: z.string().min(20, "Minimum 20 caracteres"),
 });
 
@@ -48,7 +48,7 @@ function ContactForm() {
             <div>
               <label className="block text-sm font-medium text-dark mb-1.5">Sujet *</label>
               <select {...register("subject")} className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 ${errors.subject ? "border-red-500" : "border-gray-200"}`}>
-                <option value="">Selectionnez...</option>
+                <option value="">Sélectionnez...</option>
                 <option value="info">Demande d&apos;information</option>
                 <option value="appointment">Demande de rendez-vous</option>
                 <option value="accounting">Service comptable</option>
@@ -78,7 +78,7 @@ function ContactInfo() {
         <h4 className="font-body font-semibold text-dark mb-5">Nos coordonnees</h4>
         <ul className="space-y-4">
           {[
-            { icon: Phone, label: "Telephone", values: ["+225 07 09 57 75 30", "+225 07 09 20 46 62"], link: "tel:+2250709577530" },
+            { icon: Phone, label: "Téléphone", values: ["+225 07 09 57 75 30", "+225 07 09 20 46 62"], link: "tel:+2250709577530" },
             { icon: Mail, label: "Email", values: ["andoh.dohgad@gmail.com"], link: "mailto:andoh.dohgad@gmail.com" },
             { icon: MapPin, label: "Adresse", values: ["AfricaWorks, Plateau Rue du Commerce, Abidjan"] },
             { icon: Clock, label: "Horaires", values: ["Lundi - Vendredi : 8h00 - 17h00", "Samedi : 9h00 - 12h00"] },

@@ -20,7 +20,7 @@ const formConfigs: Record<string, { label: string; name: string; type: string; r
     { label: "Description du projet", name: "description", type: "textarea" },
   ],
   service: [
-    { label: "Type de service", name: "serviceType", type: "select", required: true, options: ["Comptabilite & Fiscalite", "Ressources Humaines", "Creation d&apos;entreprise", "Conseil Strategique", "Formation", "Co-working"] },
+    { label: "Type de service", name: "serviceType", type: "select", required: true, options: ["Comptabilité & Fiscalite", "Ressources Humaines", "Creation d&apos;entreprise", "Conseil Strategique", "Formation", "Co-working"] },
     { label: "Description du besoin *", name: "description", type: "textarea", required: true },
     { label: "Niveau d&apos;urgence", name: "urgency", type: "select", options: ["Faible", "Moyenne", "Elevee", "Critique"] },
   ],
@@ -112,7 +112,7 @@ export default function Surveys() {
                       </label>
                       {field.type === "select" ? (
                         <select {...register(field.name, { required: field.required })} className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
-                          <option value="">Selectionnez...</option>
+                          <option value="">Sélectionnez...</option>
                           {field.options?.map((o) => <option key={o} value={o}>{o}</option>)}
                         </select>
                       ) : field.type === "textarea" ? (
@@ -135,7 +135,7 @@ export default function Surveys() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-dark mb-1.5">Telephone *</label>
+                    <label className="block text-sm font-medium text-dark mb-1.5">Téléphone *</label>
                     <input type="tel" {...register("phone", { required: true })} className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary" />
                   </div>
 

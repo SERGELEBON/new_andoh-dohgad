@@ -21,7 +21,7 @@ function SolutionsGrid() {
                     <Icon className="w-8 h-8 text-primary" />
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${sol.status === "Disponible" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
-                    {sol.status === "Bientot" ? "Bientôt" : sol.status}
+                    {sol.status === "Bientôt" ? "Bientôt" : sol.status}
                   </span>
                 </div>
                 <h3 className="font-display text-xl font-semibold text-dark mb-3">{sol.title}</h3>
@@ -52,11 +52,11 @@ function ERPTeaser() {
           <div className="grid lg:grid-cols-[60%_40%] gap-8 items-center">
             <div className={`p-8 lg:p-12 transition-all duration-700 ${isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}>
               <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full mb-4 uppercase tracking-wider">Projet en developpement</span>
-              <h3 className="font-display text-2xl lg:text-3xl font-bold text-white mb-4">ERP Andoh & Dohgad — Bientot disponible</h3>
+              <h3 className="font-display text-2xl lg:text-3xl font-bold text-white mb-4">ERP Andoh & Dohgad — Bientôt disponible</h3>
               <p className="text-white/80 text-sm lg:text-base leading-relaxed mb-6">
                 Nous developpons un ERP complet integre comptabilite, paie, RH, gestion commerciale et reporting. Une solution 100% adaptee aux realites des entreprises africaines.
               </p>
-              <p className="text-accent font-medium text-sm mb-6">Comptabilite &middot; Paie &middot; RH &middot; Gestion commerciale &middot; Reporting</p>
+              <p className="text-accent font-medium text-sm mb-6">Comptabilité &middot; Paie &middot; RH &middot; Gestion commerciale &middot; Reporting</p>
               <button className="btn-outline text-sm">Etre informe du lancement</button>
             </div>
             <div className={`p-6 lg:p-8 transition-all duration-700 delay-200 ${isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
